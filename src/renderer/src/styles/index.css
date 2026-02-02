@@ -1,6 +1,7 @@
-@import 'tailwindcss';
-@import './global.scss';
+@import "tailwindcss";
+
+@import "./global.scss";
 
 .box {
-  @apply bg-white rounded-lg shadow-md;
+	@apply bg-white rounded-lg shadow-md;
 }

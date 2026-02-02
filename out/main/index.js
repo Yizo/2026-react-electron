@@ -555,8 +555,12 @@ const IPC_CHANNEL = {
   FILE_READ: "file:read",
   FILE_SELECT: "file:select",
   SYSTEM: {
-    // 平台
-    PLATFORM: "system:platform"
+    // 窗口状态变化
+    WINDOW_STATE_CHANGE: "system:window-state-change",
+    // 显示窗口
+    SHOW_WINDOW: "system:show-window",
+    // 隐藏窗口
+    HIDE_WINDOW: "system:hide-window"
   }
 };
 async function registerIpc(mainWindow2) {
@@ -577,13 +581,26 @@ async function registerIpc(mainWindow2) {
     }
     return filePaths[0];
   });
-  __WEBPACK_EXTERNAL_MODULE_electron__.ipcMain.handle(IPC_CHANNEL.SYSTEM.PLATFORM, async () => {
-    const map = {
-      win32: "Windows",
-      darwin: "macOS",
-      linux: "Linux"
-    };
-    return map[process.platform];
+  const sendWindowState = (state) => {
+    mainWindow2.webContents.send(IPC_CHANNEL.SYSTEM.WINDOW_STATE_CHANGE, state);
+  };
+  mainWindow2.on("maximize", () => {
+    sendWindowState("maximized");
+  });
+  mainWindow2.on("unmaximize", () => {
+    sendWindowState("restored");
+  });
+  mainWindow2.on("minimize", () => {
+    sendWindowState("minimized");
+  });
+  mainWindow2.on("ready-to-show", () => {
+    mainWindow2?.show();
+  });
+  mainWindow2.on("show", () => {
+    mainWindow2.webContents.send(IPC_CHANNEL.SYSTEM.SHOW_WINDOW);
+  });
+  mainWindow2.on("hide", () => {
+    mainWindow2.webContents.send(IPC_CHANNEL.SYSTEM.HIDE_WINDOW);
   });
 }
 const topMenu = [
@@ -615,12 +632,37 @@ function createTopMenu() {
 let mainWindow = null;
 let willQuitApp = false;
 async function createWindow() {
+  const isMac = utils.platform.isMacOS;
+  const isLinux = utils.platform.isLinux;
+  function getMainWindowOptions() {
+    const options = {
+      frame: false,
+      titleBarStyle: "hidden",
+      titleBarOverlay: {
+        height: 35,
+        // 按钮区域透明
+        color: "rgba(0,0,0,0)",
+        // 按钮颜色
+        symbolColor: "white"
+      }
+    };
+    if (isMac) {
+      Object.assign(options, {
+        vibrancy: "sidebar",
+        visualEffectState: "active"
+      });
+    }
+    return options;
+  }
   mainWindow = new __WEBPACK_EXTERNAL_MODULE_electron__.BrowserWindow({
     width: 900,
     height: 670,
+    minWidth: 900,
+    minHeight: 670,
     show: false,
-    autoHideMenuBar: false,
-    ...process.platform === "linux" ? { icon } : {},
+    autoHideMenuBar: true,
+    ...getMainWindowOptions(),
+    ...isLinux ? { icon } : {},
     webPreferences: {
       preload: path.join(__dirname, "../preload/index.js"),
       sandbox: false
@@ -640,12 +682,9 @@ async function createWindow() {
     await __webpack_exports__devtron.install();
     mainWindow.webContents.openDevTools();
   }
-  await registerIpc();
-  mainWindow.on("ready-to-show", () => {
-    mainWindow?.show();
-  });
+  await registerIpc(mainWindow);
   mainWindow.on("close", (event) => {
-    if (process.platform === "darwin" && !willQuitApp) {
+    if (utils.platform.isMacOS && !willQuitApp) {
       event.preventDefault();
       mainWindow?.hide();
     }
@@ -664,7 +703,7 @@ __WEBPACK_EXTERNAL_MODULE_electron__.app.on("before-quit", () => {
   willQuitApp = true;
 });
 __WEBPACK_EXTERNAL_MODULE_electron__.app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
+  if (!utils.platform.isMacOS) {
     __WEBPACK_EXTERNAL_MODULE_electron__.app.quit();
   }
 });
