@@ -20,9 +20,9 @@ const api = {
 		ipcRenderer.invoke(IPC_CHANNEL.FILE_READ, filePath),
 	[IPC_CHANNEL.FILE_SELECT]: () => ipcRenderer.invoke(IPC_CHANNEL.FILE_SELECT),
 	[IPC_CHANNEL.SYSTEM.WINDOW_STATE_CHANGE]: (
-		callback: (state: "restored" | "maximized" | "minimized") => void
+		callback: (state: "restored" | "maximized" | "minimized" | "full-screen") => void
 	) =>
-		createIpcListener<"restored" | "maximized" | "minimized">(
+		createIpcListener<"restored" | "maximized" | "minimized" | "full-screen">(
 			IPC_CHANNEL.SYSTEM.WINDOW_STATE_CHANGE,
 			callback
 		),

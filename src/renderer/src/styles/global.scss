@@ -7,33 +7,4 @@ html {
 
 * {
 	font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-	font-size: 16px;
-}
-
-.title-bar {
-	-webkit-app-region: drag;
-	background: rgba(255, 255, 255, 0.7);
-	backdrop-filter: blur(8px);
-	padding-left: 90px;
-	height: 35px;
-}
-
-.title-bar-button {
-	-webkit-app-region: no-drag;
-	width: 28px;
-	height: 28px;
-	border-radius: 999px;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 12px;
-	color: inherit;
-	background: rgba(15, 23, 42, 0.05);
-	border: none;
-	cursor: pointer;
-	transition: background 0.2s;
-}
-
-.title-bar-button:hover {
-	background: rgba(15, 23, 42, 0.15);
 }

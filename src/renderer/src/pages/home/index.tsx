@@ -1,37 +1,6 @@
-import { IPC_CHANNEL } from "@constants";
 import TestProvider from "./test-provider";
-
-function TitleBar() {
-	const [windowState, setWindowState] = useState<"restored" | "maximized" | "minimized">(
-		"restored"
-	);
-
-	useEffect(() => {
-		const removeListener = window.api[IPC_CHANNEL.SYSTEM.WINDOW_STATE_CHANGE](
-			(state) => {
-				setWindowState(state);
-			}
-		);
-
-		return removeListener;
-	}, []);
-
-	const statusLabel =
-		windowState === "maximized"
-			? "窗口已最大化"
-			: windowState === "minimized"
-				? "窗口已最小化"
-				: "自定义标题栏";
-
-	return (
-		<div className="title-bar flex-none">
-			<div className="h-full flex items-center gap-2">
-				<span className="text-base font-semibold">Electron 2026</span>
-				<span className="text-xs text-slate-500">{statusLabel}</span>
-			</div>
-		</div>
-	);
-}
+import { Header } from "@renderer/components";
+import { IPC_CHANNEL } from "@constants";
 
 export default function Home() {
 	const { message } = App.useApp();
@@ -43,14 +12,6 @@ export default function Home() {
 
 	useEffect(() => {
 		setPlatform(window.electron.process.platform);
-
-		window.api[IPC_CHANNEL.SYSTEM.SHOW_WINDOW](() => {
-			message.success("窗口已显示");
-		});
-
-		window.api[IPC_CHANNEL.SYSTEM.HIDE_WINDOW](() => {
-			message.success("窗口已隐藏");
-		});
 	}, []);
 
 	function handleReadFile(): void {
@@ -70,8 +31,8 @@ export default function Home() {
 	}
 
 	return (
-		<div className="flex h-screen flex-col bg-slate-50 text-slate-900">
-			<TitleBar />
+		<div className="flex flex-col bg-slate-50 text-slate-900">
+			<Header />
 			<main className="flex-1">
 				<div
 					className="flex flex-col items-center justify-center h-full w-full gap-4 px-4 py-8"

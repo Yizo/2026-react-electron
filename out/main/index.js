@@ -582,7 +582,9 @@ async function registerIpc(mainWindow2) {
     return filePaths[0];
   });
   const sendWindowState = (state) => {
-    mainWindow2.webContents.send(IPC_CHANNEL.SYSTEM.WINDOW_STATE_CHANGE, state);
+    if (mainWindow2 && !mainWindow2.isDestroyed() && mainWindow2.webContents) {
+      mainWindow2.webContents.send(IPC_CHANNEL.SYSTEM.WINDOW_STATE_CHANGE, state);
+    }
   };
   mainWindow2.on("maximize", () => {
     sendWindowState("maximized");
@@ -592,6 +594,12 @@ async function registerIpc(mainWindow2) {
   });
   mainWindow2.on("minimize", () => {
     sendWindowState("minimized");
+  });
+  mainWindow2.on("enter-full-screen", () => {
+    sendWindowState("full-screen");
+  });
+  mainWindow2.on("leave-full-screen", () => {
+    sendWindowState("restored");
   });
   mainWindow2.on("ready-to-show", () => {
     mainWindow2?.show();

@@ -25,8 +25,10 @@ export async function registerIpc(mainWindow: BrowserWindow) {
 		return filePaths[0];
 	});
 
-	const sendWindowState = (state: "restored" | "maximized" | "minimized") => {
-		mainWindow.webContents.send(IPC_CHANNEL.SYSTEM.WINDOW_STATE_CHANGE, state);
+	const sendWindowState = (state: "restored" | "maximized" | "minimized" | "full-screen") => {
+		if (mainWindow && !mainWindow.isDestroyed() && mainWindow.webContents) {
+			mainWindow.webContents.send(IPC_CHANNEL.SYSTEM.WINDOW_STATE_CHANGE, state);
+		}
 	};
 
 	mainWindow.on("maximize", () => {
@@ -37,6 +39,13 @@ export async function registerIpc(mainWindow: BrowserWindow) {
 	});
 	mainWindow.on("minimize", () => {
 		sendWindowState("minimized");
+	});
+	// macOS 红绿灯按钮点击触发全屏事件
+	mainWindow.on("enter-full-screen", () => {
+		sendWindowState("full-screen");
+	});
+	mainWindow.on("leave-full-screen", () => {
+		sendWindowState("restored");
 	});
 
 	mainWindow.on("ready-to-show", () => {

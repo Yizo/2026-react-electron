@@ -9,4 +9,5 @@ declare global {
   const App: typeof import('antd').App
   const Button: typeof import('antd').Button
   const Input: typeof import('antd').Input
+  const message: typeof import('antd').message
 }

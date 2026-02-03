@@ -1,0 +1,10 @@
+.header {
+	height: 35px;
+	-webkit-app-region: drag;
+	cursor: pointer;
+	user-select: none;
+	position: sticky;
+	top: 0;
+	z-index: 1000; /* 确保在内容上方 */
+	background-color: #fff; /* 防止透明穿透 */
+}
