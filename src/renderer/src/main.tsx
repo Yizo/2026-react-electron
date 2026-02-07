@@ -5,11 +5,11 @@ import dayjs from "dayjs";
 import "dayjs/locale/zh-cn";
 import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { useAppSelector, persistor as persistorStore } from "@renderer/store";
-import store from "@renderer/store";
+import { useAppSelector, persistor as persistorStore } from "@/store";
+import store from "@/store";
 import zhCN from "antd/locale/zh_CN";
-import Router from "@renderer/router";
-import "@renderer/styles/index.css";
+import Router from "@/router";
+import "@/styles/index.css";
 
 dayjs.locale("zh-cn");
 

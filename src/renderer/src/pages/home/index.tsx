@@ -1,5 +1,5 @@
 import TestProvider from "./test-provider";
-import { Header } from "@renderer/components";
+import { Header } from "@/components";
 import { IPC_CHANNEL } from "@constants";
 
 export default function Home() {

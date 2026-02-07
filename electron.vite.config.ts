@@ -30,8 +30,8 @@ export default defineConfig(({ command, mode }) => {
     renderer: {
       resolve: {
         alias: {
-          '@renderer': resolve('src/renderer/src'),
           '@constants': resolve('src/constants'),
+          '@': resolve('src/renderer/src'),
         },
       },
       plugins: [

@@ -1,9 +1,9 @@
-import { useRequest as requestAxios } from '@renderer/utils/axios/axios'
+import { useRequest as requestAxios } from '@/utils/axios/axios'
 import { message } from 'antd'
-import type { CustomAxiosRequestConfig, ApiResponse } from '@renderer/utils/axios/types'
+import type { CustomAxiosRequestConfig, ApiResponse } from '@/utils/axios/types'
 import type { AxiosRequestHeaders } from 'axios'
 import { AxiosError } from 'axios'
-import store from '@renderer/store'
+import store from '@/store'
 
 const config: CustomAxiosRequestConfig = {
   baseURL: import.meta.env.VITE_API_BASE_URL ?? '',

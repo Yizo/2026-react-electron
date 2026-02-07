@@ -1,8 +1,8 @@
 import axios from 'axios'
 import type { AxiosInstance, AxiosError, AxiosResponse, AxiosRequestHeaders } from 'axios'
 import { message } from 'antd'
-import store from '@renderer/store'
-import { addLoading, removeLoading } from '@renderer/store/system'
+import store from '@/store'
+import { addLoading, removeLoading } from '@/store/system'
 import { requestCancelManager } from './cancelManager'
 import type { CustomAxiosRequestConfig, ApiResponse } from './types'
 

@@ -1,4 +1,4 @@
-import { ProviderContext, Provider } from "@renderer/hooks/useProvider";
+import { ProviderContext, Provider } from "@/hooks/useProvider";
 
 function Child() {
 	const context = useContext(ProviderContext);

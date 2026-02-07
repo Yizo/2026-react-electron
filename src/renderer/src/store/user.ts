@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { useRequest } from 'ahooks'
 import { useDispatch } from 'react-redux'
-import { request } from '@renderer/services'
+import { request } from '@/services'
 
 export interface UserState {
   userInfo: null | Record<string, any>
@@ -48,7 +48,7 @@ export function useLogin() {
     },
     {
       manual: true,
-    }
+    },
   )
 
   async function onLogin(values: any) {
@@ -63,7 +63,7 @@ export function useLogin() {
           id: data.user.id,
           name: data.user.username,
         },
-      })
+      }),
     )
   }
 
@@ -79,7 +79,7 @@ export function useLogout() {
     },
     {
       manual: true,
-    }
+    },
   )
 
   async function onLogout() {

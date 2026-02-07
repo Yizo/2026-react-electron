@@ -1,5 +1,5 @@
 import { createHashRouter, RouterProvider } from 'react-router';
-import Home from '@renderer/pages/home';
+import Home from '@/pages/home';
 
 export default function Router() {
   const router = createHashRouter([
